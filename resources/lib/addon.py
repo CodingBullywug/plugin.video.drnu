@@ -403,6 +403,8 @@ class DrDkTvAddon(object):
         video = self.api.getVideoUrl(api_item['PrimaryAsset']['Uri'])
         item = xbmcgui.ListItem(path=video['Uri'], offscreen=True)
         item.setArt({'thumb': api_item['PrimaryImageUri']})
+        item.setProperty('inputstream', 'inputstream.adaptive')
+        item.setProperty('inputstream.adaptive.manifest_type', 'hls')
 
         if not all([bool_setting('disable.kids.subtitles') and kids_channel]):
             if video['SubtitlesUri']:
