@@ -8,7 +8,11 @@
         <setting id="disable.kids" label="30505" type="bool" default="true" />
         <setting id="disable.kids.subtitles" label="30509" type="bool" default="true" />
         <setting label="30504" type="action" action="RunScript($CWD/resources/lib/clearfavorites.py)" />
-				<setting label="30521" type="action" action="RunPlugin(plugin://plugin.video.drnu/?reCache=1)" />
-				<setting id="recache.expiration" label="30522" type="number" default="23" />
+	</category>
+	<category label="30501">
+		<setting label="30521" type="action" action="RunPlugin(plugin://plugin.video.drnu/?reCache=1)" />
+		<setting id="recache.expiration" label="30522" type="number" default="24" />
+		<setting id="recache.cronjob" label="30524" type="bool" default="false" />
+		<setting id="recache.cronexpression" label="30525" type="text" default="0 3 * * *" />
 	</category>
 </settings>
