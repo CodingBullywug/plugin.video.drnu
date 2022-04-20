@@ -36,6 +36,8 @@ from resources.lib import tvapi
 from resources.lib import tvgui
 
 from pathlib import Path
+from cron import CronManager, CronJob
+
 addon = xbmcaddon.Addon()
 get_setting = addon.getSetting
 addon_path = addon.getAddonInfo('path')
@@ -84,6 +86,25 @@ class DrDkTvAddon(object):
             addon_path, 'resources', 'icons', 'all.png')})
 
         self.api = tvapi.Api(self.cache_path, tr, expire_hours=int(get_setting('recache.expiration')))
+
+        manager = CronManager()
+        job = None
+        for job in manager.getJobs():
+            if job.name == "plugin.video.drnu cronjob":
+                job = manager.getJob(job.id)
+                break
+        if job is None:
+            job = CronJob()
+
+        # add a job
+        job.name = "plugin.video.drnu cronjob"
+#        job.addon = 'service.cronxbmc'
+        job.command_type = "json"  # this is set to "built-in" by default
+        job.command = '{"jsonrpc": "2.0", "method": "Addons.ExecuteAddon", "params": { "addonid": "plugin.video.drnu", "params":["?reCache=1"]}, "id": "1"}'
+        job.expression = "0 3 * * *"
+        job.show_notification = "false"
+
+        manager.addJob(job)  # call this to create new or update an existing job
         self._load()
 
     def _save(self):
@@ -472,8 +493,6 @@ class DrDkTvAddon(object):
         heading = 'I/O error'
         xbmcgui.Dialog().ok(heading, '\n'.join([tr(30902), tr(30903), message]))
 
-# {"jsonrpc": "2.0", "method": "Addons.ExecuteAddon", "params": { "addonid": "plugin.video.drnu", "params":["?reCache=1"]}, "id": "1"}
-# cron
     def route(self, query):
         try:
             PARAMS = dict(urlparse.parse_qsl(query[1:]))
