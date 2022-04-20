@@ -108,6 +108,10 @@ msgctxt "#30500"
 msgid "General"
 msgstr "Generelt"
 
+msgctxt "#30501"
+msgid "re-caching"
+msgstr "re-caching"
+
 msgctxt "#30503"
 msgid "Enable Hard-of-hearing subtitles"
 msgstr "Vis undertekster for hørehæmmedde"
@@ -179,6 +183,14 @@ msgstr "cache holdbarhed i timer"
 msgctxt "#30523"
 msgid "re-cache all in: "
 msgstr "re-cache alt i: "
+
+msgctxt "#30524"
+msgid "re-cache cron job"
+msgstr "re-cache cron job"
+
+msgctxt "#30525"
+msgid "cron expression"
+msgstr "cron tidskode"
 
 msgctxt "#30900"
 msgid "There was an error while communicating with DR NU."

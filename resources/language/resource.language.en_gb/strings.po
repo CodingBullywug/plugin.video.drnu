@@ -108,6 +108,10 @@ msgctxt "#30500"
 msgid "General"
 msgstr ""
 
+msgctxt "#30501"
+msgid "re-caching"
+msgstr ""
+
 msgctxt "#30503"
 msgid "Enable Hard-of-hearing subtitles"
 msgstr ""
@@ -178,6 +182,14 @@ msgstr ""
 
 msgctxt "#30523"
 msgid "re-cache all in: "
+msgstr ""
+
+msgctxt "#30524"
+msgid "re-cache cron job"
+msgstr ""
+
+msgctxt "#30525"
+msgid "cron expression"
 msgstr ""
 
 msgctxt "#30900"
