@@ -1,3 +1,6 @@
+[B]Version 5.2.0 - 2022-05-01[/B]
+- add cronjob for recaching of all jsons from dr api
+
 [B]Version 5.1.1 - 2022-04-20[/B]
 - hot-fix to use hls inputstreams
 
