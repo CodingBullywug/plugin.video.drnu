@@ -38,9 +38,9 @@ class Api():
 
     def __init__(self, cachePath, getLocalizedString, expire_hours=24):
         self.cachePath = cachePath
+        self.expire_hours = expire_hours
         self.tr = getLocalizedString
 
-        # cache expires after: 3600 = 1hour
         self.session = requests_cache.CachedSession(os.path.join(
             cachePath, 'requests.cache'), backend='sqlite', expire_after=3600*expire_hours)
         self.empty_srt = f'{self.cachePath}/{self.tr(30508)}.da.srt'
@@ -58,7 +58,15 @@ class Api():
 
     def recache_requests(self, cache_urls=False, cache_episodes=False, clear_expired=True, progress=None):
         if clear_expired:
-            self.session.remove_expired_responses()
+            try:
+                self.session.remove_expired_responses()
+            except Exception:
+                if Path(self.cachePath, 'requests.cache.sqlite').exists():
+                    Path(self.cachePath, 'requests.cache.sqlite').unlink()
+                self.session = requests_cache.CachedSession(os.path.join(
+                    self.cachePath, 'requests.cache'), backend='sqlite', expire_after=3600*self.expire_hours)
+                self.session.remove_expired_responses()
+
         cache_output = Path(self.cachePath + '/recache.log').open('w')
 
         st = time.time()
