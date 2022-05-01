@@ -84,8 +84,7 @@ class DrDkTvAddon(object):
         self.area_item.setArt({'fanart': self.fanart_image, 'icon': os.path.join(
             addon_path, 'resources', 'icons', 'all.png')})
 
-        self.api = tvapi.Api(self.cache_path, tr, expire_hours=float(get_setting('recache.expiration')))
-
+        expire_hours = float(get_setting('recache.expiration'))
         manager = CronManager()
         job = None
         for job in manager.getJobs():
@@ -107,6 +106,7 @@ class DrDkTvAddon(object):
             if job is not None:
                 manager.deleteJob(job.id)
 
+        self.api = tvapi.Api(self.cache_path, tr, expire_hours=expire_hours)
         self._load()
 
     def _save(self):
