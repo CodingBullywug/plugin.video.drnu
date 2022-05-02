@@ -406,9 +406,8 @@ class DrDkTvAddon(object):
         item.setArt({'thumb': api_item['PrimaryImageUri']})
         is_helper = Helper('hls')
         if is_helper.check_inputstream():
-            item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
-        item.setProperty('inputstream', 'inputstream.adaptive')
-        item.setProperty('inputstream.adaptive.manifest_type', 'hls')
+            item.setProperty('inputstream', is_helper.inputstream_addon)
+            item.setProperty('inputstream.adaptive.manifest_type', 'hls')
 
         if not all([bool_setting('disable.kids.subtitles') and kids_channel]):
             if video['SubtitlesUri']:
@@ -440,9 +439,8 @@ class DrDkTvAddon(object):
                             'icon': channel['PrimaryImageUri']})
                 is_helper = Helper('hls')
                 if is_helper.check_inputstream():
-                    item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
-                item.setProperty('inputstream', 'inputstream.adaptive')
-                item.setProperty('inputstream.adaptive.manifest_type', 'hls')
+                    item.setProperty('inputstream', is_helper.inputstream_addon)
+                    item.setProperty('inputstream.adaptive.manifest_type', 'hls')
                 item.addContextMenuItems(self.menuItems, False)
                 break
         if item:
