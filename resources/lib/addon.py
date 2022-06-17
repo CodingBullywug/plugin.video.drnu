@@ -108,18 +108,47 @@ class DrDkTvAddon(object):
                 pass
 
     def showAreaSelector(self):
-        gui = tvgui.AreaSelectorDialog(tr, resources_path)
-        gui.doModal()
-        areaSelected = gui.areaSelected
-        del gui
+        if bool_setting('use.fancyareaitem'):
+            gui = tvgui.AreaSelectorDialog(tr, resources_path)
+            gui.doModal()
+            areaSelected = gui.areaSelected
+            del gui
 
-        if areaSelected == 'none':
-            pass
-        elif areaSelected == 'drtv':
-            self.showMainMenu()
+            if areaSelected == 'none':
+                pass
+            elif areaSelected == 'drtv':
+                self.showMainMenu()
+            else:
+                items = self.api.getChildrenFrontItems('dr-' + areaSelected)
+                self.listSeries(items, add_area_selector=bool_setting('enable.areaitem'))
         else:
-            items = self.api.getChildrenFrontItems('dr-' + areaSelected)
-            self.listSeries(items, add_area_selector=bool_setting('enable.areaitem'))
+            self.showSimpleAreaSelector()
+
+    def showSimpleAreaSelector(self):
+        items = list()
+        # DRTV
+        item = xbmcgui.ListItem('DR TV', offscreen=True)
+        item.setArt({'fanart': str(resources_path/'button-drtv.png'), 'icon': str(resources_path/'button-drtv.png')})
+        item.addContextMenuItems(self.menuItems, False)
+        items.append((self._plugin_url + '?area=drtv', item, True))
+        # Ultra
+        item = xbmcgui.ListItem('Ultra', offscreen=True)
+        item.setArt({'fanart': str(resources_path/'button-ultra.png'), 'icon': str(resources_path/'button-ultra.png')})
+        item.addContextMenuItems(self.menuItems, False)
+        items.append((self._plugin_url + '?area=ultra', item, True))
+        # Ramasjang
+        item = xbmcgui.ListItem('Ramasjang', offscreen=True)
+        item.setArt({'fanart': str(resources_path/'button-ramasjang.png'), 'icon': str(resources_path/'button-ramasjang.png')})
+        item.addContextMenuItems(self.menuItems, False)
+        items.append((self._plugin_url + '?area=ramasjang', item, True))
+        # Minisjang
+        item = xbmcgui.ListItem('Minisjang', offscreen=True)
+        item.setArt({'fanart': str(resources_path/'button-minisjang.png'), 'icon': str(resources_path/'button-minisjang.png')})
+        item.addContextMenuItems(self.menuItems, False)
+        items.append((self._plugin_url + '?area=minisjang', item, True))
+
+        xbmcplugin.addDirectoryItems(self._plugin_handle, items)
+        xbmcplugin.endOfDirectory(self._plugin_handle)
 
     def showMainMenu(self):
         items = list()
@@ -592,10 +621,22 @@ class DrDkTvAddon(object):
                 self.delFavorite(PARAMS['delfavorite'])
 
             else:
-                try:
-                    area = int(get_setting('area'))
-                except Exception:
-                    area = 0
+                if 'area' in PARAMS:
+                    if PARAMS['area'] == 'drtv':
+                        area = 1
+                    elif PARAMS['area'] == 'ultra':
+                        area = 5
+                    elif PARAMS['area'] == 'ramasjang':
+                        area = 3
+                    elif PARAMS['area'] == 'minisjang':
+                        area = 2
+                    else:
+                        area = 0
+                else:
+                    try:
+                        area = int(get_setting('area'))
+                    except Exception:
+                        area = 0
 
                 if area == 0:
                     self.showAreaSelector()
